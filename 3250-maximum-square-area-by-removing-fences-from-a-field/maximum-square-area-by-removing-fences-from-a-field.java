@@ -1,41 +1,31 @@
 class Solution {
-
     public int maximizeSquareArea(int m, int n, int[] hFences, int[] vFences) {
-        Set<Integer> hEdges = getEdges(hFences, m);
-        Set<Integer> vEdges = getEdges(vFences, n);
-
-        long res = 0;
-        for (int e : hEdges) {
-            if (vEdges.contains(e)) {
-                res = Math.max(res, e);
+        long mod = 1_000_000_007L;
+        int[] h = Arrays.copyOf(hFences, hFences.length + 2);
+        int[] v = Arrays.copyOf(vFences, vFences.length + 2);
+        h[h.length - 2] = 1;
+        h[h.length - 1] = m;
+        v[v.length - 2] = 1;
+        v[v.length - 1] = n;
+        Arrays.sort(h);
+        Arrays.sort(v);
+        HashSet<Long> set = new HashSet<>();
+        for (int i = 0; i < h.length; i++){
+            for (int j = i + 1; j < h.length; j++){
+                set.add((long)(h[j] - h[i]));
             }
         }
-
-        if (res == 0) {
+        long maxArea = -1;
+        for (int i = 0; i < v.length; i++){
+            for (int j = i + 1; j < v.length; j++){
+                long d = v[j] - v[i];
+                if (set.contains(d)){
+                    maxArea = Math.max(maxArea, d);
+                }
+            }
+        }
+        if (maxArea == -1)
             return -1;
-        } else {
-            return (int) ((res * res) % 1000000007);
-        }
-    }
-
-    private Set<Integer> getEdges(int[] fences, int border) {
-        Set<Integer> set = new HashSet<>();
-        List<Integer> list = new ArrayList<>();
-
-        for (int fence : fences) {
-            list.add(fence);
-        }
-
-        list.add(1);
-        list.add(border);
-        Collections.sort(list);
-
-        for (int i = 0; i < list.size(); i++) {
-            for (int j = i + 1; j < list.size(); j++) {
-                set.add(list.get(j) - list.get(i));
-            }
-        }
-
-        return set;
+        return (int)((maxArea * maxArea) % mod);
     }
 }

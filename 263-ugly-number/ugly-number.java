@@ -3,19 +3,16 @@ class Solution {
         boolean res=false;
         if (n<=0)return false;
 
-        HashSet<Integer> h1 = new HashSet<>();
-        h1.add(2);
-        h1.add(3);
-        h1.add(5);
-        int orig=n;
-
-        for(int i:h1){
-            while (n%i==0){
-                n/=i;
-            }
+        while (n%2==0){
+            n=n/2;
+        }
+        while (n%3==0){
+            n=n/3;
+        }
+        while (n%5==0){
+            n=n/5;
         }
         return n==1;
-
         
     }
 }
